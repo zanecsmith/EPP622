@@ -6,7 +6,7 @@
 ` mkdir zsmith10 `
 
 ---
-### FastQC [Directory: 1_fastqc] : Assess Quality of Sequence Reads.
+### FastQC v0.11.9 [Directory: 1_fastqc] : Assess Quality of Sequence Reads.
 ----
 #### 1. Make a new fastqc directory.
 ` mkdir 1_fastqc ` \
@@ -30,7 +30,7 @@
 ##### 5b. View files in browser to check quality, then return to the sphinx terminal.
 
 ---
-### Skewer [Directory: 2_skewer]: Trim Sequence Reads of Adapter Sequences.
+### Skewer v0.2.2 [Directory: 2_skewer]: Trim Sequence Reads of Adapter Sequences.
 ---
 #### 1. Make a new skewer directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10
 ` cd ../ ` \
@@ -63,6 +63,24 @@
 ##### 6b. View files in browser to check quality, then return to the sphinx terminal.
 
 ---
-## BWA [Directory: 3_bwa]: Burrows-Wheeler Alignment (Aligning Sequences to a Reference)
+## BWA v0.7.17 [Directory: 3_bwa]: Burrows-Wheeler Alignment (Aligning Sequences to a Reference)
 ---
+#### 1. Create a directory for bwa analyses and change directories to it.
+` mkdir 3_bwa `
+` cd 3_bwa `
 
+#### 2. Create a directory to house the reference genome and all pre-indexed files, then symbolically link them.
+` mkdir solenopsis_genome_index `
+` cd solenopsis_genome_index `
+` ln -s ../../../../raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta* . `
+
+#### 3. Return to the 3_bwa directory and symbolically link trimmed fastq files from the 2_skewer directory.
+` cd ../`
+` ln -s ../2_skewer/*-trimmed.fastq . `
+
+#### 4. Load `bwa` and `samtools` using `spack`
+`spack load bwa`
+`spack load samtools`
+
+#### 5. Run `bwa` to produce SAM file alignments and pipe the aligned reads to `samtools` to convert the SAM files to BAM files.
+`
