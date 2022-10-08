@@ -148,3 +148,9 @@ done
 ```
 bash bwa.sh
 ```
+#### 8. To assess mapped reads, run the following for loop to create mapping stats files with `samtools`.
+```
+nano samtools_flagstat.sh
+
+for file in *_sorted.bam ; do basename=$(echo $file | sed 's/-trimmed_sorted.bam//') ; samtools flagstat $basename-trimmed_sorted.bam > $basename-trimmed_sorted.stats ; done
+```
