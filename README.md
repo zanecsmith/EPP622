@@ -6,7 +6,7 @@
 ` mkdir zsmith10 `
 
 ---
-### Fastq QC [Directory: 1_fastqc]
+### FastQC [Directory: 1_fastqc] : Assess Quality of Sequence Reads.
 ----
 #### 1. Make a new fastqc directory.
 ` mkdir 1_fastqc ` \
@@ -30,7 +30,7 @@
 ##### 5b. View files in browser to check quality, then return to the sphinx terminal.
 
 ---
-### Skewer [Directory: 2_skewer]
+### Skewer [Directory: 2_skewer]: Trim Sequence Reads of Adapter Sequences.
 ---
 #### 1. Make a new skewer directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10
 ` cd ../ ` \
@@ -61,3 +61,8 @@
 ` cd test2_2_skewer ` \
 ` scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/2_skewer/*html' . `
 ##### 6b. View files in browser to check quality, then return to the sphinx terminal.
+
+---
+## BWA [Directory: 3_bwa]: Burrows-Wheeler Alignment (Aligning Sequences to a Reference)
+---
+
