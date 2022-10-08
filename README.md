@@ -121,6 +121,10 @@ nano bwa.sh
 
 #### 6. Here, we will use a for loop to: 1) define basenames for our .fastq files by removing the ".fastq" text and printing to the terminal using echo; 2) loading `bwa` and `samtools` using `spack`; and 3) running `bwa` to align S. invicta sequences to the reference genome, producing SAM files; and 4) piping bwa SAM file output into samtools to convert files into BAM format.
 #### In the open nano file, enter the following script:
+* the -t flag specified the number of threads for `bwa` to use.
+* the -bSh flag in `samtools` converts large SAM files into smaller, binary BAM files with headers.
+* the -@ flag designates threads for the job in `samtools`.
+* the -m flag designates memory for the job in `samtools`.
 ```
 for file in *.fastq
 do
@@ -140,7 +144,7 @@ do
     -o ${basename}_sorted.bam
 done
 ```
-#### 7. Run the script using bash with the following command:
+#### 7. Run the script, which will produce sorted BAM files, using bash with the following command:
 ```
 bash bwa.sh
 ```
