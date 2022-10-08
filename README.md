@@ -27,7 +27,7 @@
 ` mkdir test2_1_fastqc ` \
 ` cd test2_ 1_fastqc ` \
 ` scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/1_fastqc/*html' . `
-##### 5b. View files in browser, then return to sphinx terminal
+##### 5b. View files in browser to check quality, then return to sphinx terminal
 
 ---
 ### Skewer [Directory: 2_skewer]
