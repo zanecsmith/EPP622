@@ -12,7 +12,7 @@
 ` mkdir 1_fastqc ` \
 ` cd 1_fastqc `
 
-#### 2. Link Solenopsis invicta sequence files to 1_fastqc directory.
+#### 2. Symbolically link Solenopsis invicta sequence files to 1_fastqc directory.
 ` ln -s ../../../raw_data/solenopsis_invicta_test2/*fastq . `
 
 #### 3. Load fastqc in Spack.
@@ -32,7 +32,13 @@
 ---
 ### Skewer [Directory: 2_skewer]
 ---
-#### Make a new skewer directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10
+#### 1. Make a new skewer directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10
 ` cd ../ ` \
 ` mkdir 2_skewer ` \
 ` cd 2_skewer `
+
+#### 2. Symbolically link .fastq files in the 2_skewer file.
+` ln -s ../../../raw_data/solenopsis_invicta_test2/*fastq . `
+
+#### 3. Trim all .fastq files using a for loop.
+
