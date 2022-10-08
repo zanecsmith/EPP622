@@ -148,7 +148,7 @@ done
 ```
 bash bwa.sh
 ```
-#### 8. To assess mapped reads, run the following for loop to create mapping stats files with `samtools`.
+#### 8. To assess mapped reads and supplemental reads, run the following for loop to create read-mapping stats files with `samtools`.
 ```
 nano samtools_flagstat.sh
 
