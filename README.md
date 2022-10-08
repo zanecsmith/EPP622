@@ -88,7 +88,7 @@ scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysi
 ---
 ## BWA v0.7.17 [Directory: 3_bwa]: Burrows-Wheeler Alignment (Aligning Sequences to a Reference)
 ---
-#### 1. Create a directory for bwa analyses and change directories to it.
+#### 1. Create a directory for `bwa` analyses and change directories to it.
 ```
 mkdir 3_bwa
 cd 3_bwa
@@ -107,10 +107,10 @@ cd ../
 ln -s ../2_skewer/*-trimmed.fastq .
 ```
 
-#### 4. Load `bwa` and `samtools` using `spack`
+#### 4. Load `bwa` v0.7.17 and `samtools` v1.9 using `spack`
 ```
 spack load bwa
-spack load samtools
+spack load samtools@1.9%gcc@8.4.1
 ```
 
 #### 5. Run `bwa` to produce SAM file alignments and pipe the aligned reads to `samtools` to convert the SAM files to BAM files.
