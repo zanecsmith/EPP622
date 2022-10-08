@@ -7,8 +7,8 @@ cd /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/
 mkdir zsmith10
 ```
 ---
-### FastQC v0.11.9 [Directory: 1_fastqc] : Assess Quality of Sequence Reads.
-----
+## FastQC v0.11.9 [Directory: 1_fastqc] : Assess Quality of Sequence Reads.
+---
 #### 1. Make a new fastqc directory.
 ```
 mkdir 1_fastqc
@@ -41,7 +41,7 @@ scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysi
 ##### 5b. View files in browser to check quality, then return to the sphinx terminal.
 
 ---
-### Skewer v0.2.2 [Directory: 2_skewer]: Trim Sequence Reads of Adapter Sequences.
+## Skewer v0.2.2 [Directory: 2_skewer]: Trim Sequence Reads of Adapter Sequences.
 ---
 #### 1. Make a new skewer directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10
 ```
