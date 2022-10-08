@@ -47,10 +47,10 @@
 
 #### 4. Trim all .fastq files of synthetic adapter sequences using a for loop.
 ` for f in *fastq; do BASE=$( basename $f | sed 's/_1.fastq//g'); echo $BASE;  /sphinx_local/software/skewer/skewer -t 2 -l 95 -Q 30 -x AGATCGGAAGAGCGGTTCAGCAGGAATGCCGAGACCGATCTCGTATGCCGTCTTCTGCTTG $f -o $BASE; done `
-##### *the BASE=$( basename $f | sed 's/_1.fastq//g') function will define the basename of a file and remove the _1.fastq from all file names. Skewer will automatically add -trimmed.fastq to the base file names after analysis.
-##### **The -t flag defines the number of threads for Skewer to use
-##### **The -l flag defines minimum sequence lengths to keep
-##### ** The -Q flag defines the minimum Phred quality score for seqeuences
+  ##### *the BASE=$( basename $f | sed 's/_1.fastq//g') function will define the basename of a file and remove the _1.fastq from all file names. Skewer will automatically add -trimmed.fastq to the base file names after analysis.
+  ##### **The -t flag defines the number of threads for Skewer to use
+  ##### **The -l flag defines minimum sequence lengths to keep
+  ##### ** The -Q flag defines the minimum Phred quality score for seqeuences
 
 #### 5. Run fastqc on trimmed .fastq files to generate .fastqc files in html format.
 ` fastqc *trimmed.fastq `
