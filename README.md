@@ -113,6 +113,34 @@ spack load bwa
 spack load samtools@1.9%gcc@8.4.1
 ```
 
-#### 5. Run `bwa` to produce SAM file alignments and pipe the aligned reads to `samtools` to convert the SAM files to BAM files.
+#### 5. Create a new script file (file extension = .sh) using `nano`. You may need to load `nano` using `spack`.
+```
+spack load nano
+nano bwa.sh
 ```
 
+#### 6. Here, we will use a for loop to: 1) define basenames for our .fastq files by removing the ".fastq" text and printing to the terminal using echo; 2) loading `bwa` and `samtools` using `spack`; and 3) running `bwa` to align S. invicta sequences to the reference genome, producing SAM files; and 4) piping bwa SAM file output into samtools to convert files into BAM format.
+#### In the open nano file, enter the following script:
+```
+for file in *.fastq
+do
+    basename=$(echo "$file" | sed 's/.fastq//')
+    echo $file
+    echo $basename
+
+    spack load bwa
+    spack load samtools@1.9%gcc@8.4.1
+
+    bwa mem -t 6 \
+    solenopsis_genome_index/UNIL_Sinv_3.0.fasta \
+    ${basename}.fastq \
+    | samtools view -bSh \
+    | samtools sort \
+    -@ 3 -m 4G \
+    -o ${basename}_sorted.bam
+done
+```
+#### 7. Run the script using bash with the following command:
+```
+bash bwa.sh
+```
