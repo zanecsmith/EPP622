@@ -153,8 +153,19 @@ bash bwa.sh
 #### 8. To assess mapped reads and supplemental reads, run the following for loop to create read-mapping stats files with `samtools`.
 ```
 nano samtools_flagstat.sh
+```
+```
+spack load samtools@1.9
+spack load bc%gcc@8.4.1
 
-for file in *_sorted.bam ; do basename=$(echo $file | sed 's/-trimmed_sorted.bam//') ; samtools flagstat $basename-trimmed_sorted.bam > $basename-trimmed_sorted.stats ; done
+for file in *_sorted.bam
+do
+        basename=$(echo $file | sed 's/-trimmed_sorted.bam//')
+        samtools flagstat $basename-trimmed_sorted.bam > $basename-trimmed_sorted.stats
+
+        echo $(cat $basename-trimmed.fastq | wc -l)/4 | bc
+
+done
 ```
 
 #### 9. Add read groups to all BAM files for processing in GATK using `java` and `samtools`. First, load `java` (for Picard Tools) and `samtools`. 
@@ -193,6 +204,12 @@ bash picardtools.sh
 ```
 ls -lh *bam
 ```
+#### 13. Correct read mapping percentages with `bc` tools by dividing by 4.
+```
+spack load bc%gcc@8.4.1
+echo $(cat *-trimmed.fastq | wc -l)/4 | bc
+```
+
 ---
 ## 4. GATK v4.1.8.1: Variant Calling [Directory: 4_gatk]
 ---
