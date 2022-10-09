@@ -287,9 +287,9 @@ ln -s ../4_gatk/UNIL_Sinv_3.0.fasta.fai
 ln -s ../4_gatk/UNIL_Sinv_3.0.dict .
 ```
 
-#### 3. Link all GVCF files from the 4_gatk directory.
+#### 3. Link all VCF and GVCF files from the 4_gatk directory.
 ```
-ln -s /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/*g.vcf .
+ln -s /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/*vcf .
 ```
 
 #### 4. Write a script (`gatk_combine_gvcf_create.text.sh`) to generate a text command to combine GVCF files using the `gatk` CombineGVCF tool. 
@@ -334,7 +334,7 @@ bash gatk_combine_gvcf_run.sh
 spack load bcftools
 bcftools stats solenopsis_combined.vcf.gz > solenopsis_combined.vcf.stats.txt
 ```
-*Parameters for file output appear so:
+*Variant information in file output appears so:
 ```
 SN      0       number of samples:      4
 SN      0       number of records:      59869
@@ -370,3 +370,10 @@ bcftools stats solenopsis_combined.Basicfilters.vcf > solenopsis_combined.Basicf
 #### 12. Compare filtered and unfiltered files using `bcftools`.
 ```
 bcftools stats -f "PASS,." solenopsis_combined.vcf.gz >solenopsis_combined.vcf.stats.txt
+bcftools stats -f "PASS,." solenopsis_combined.Basicfilters.vcf.gz >solenopsis_combined.Basicfilters.vcf.stats.txt
+bcftools stats -f "PASS,." solenopsis_combined.GATKfilters.vcf.gz >solenopsis_combined.GATKfilters.vcf.stats.txt
+```
+#### 13. Search for the number of SNPs in each `.stats.txt` file.
+grep 'number of SNPs:' *stats.txt
+
+
