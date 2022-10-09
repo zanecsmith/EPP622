@@ -380,6 +380,15 @@ bcftools stats solenopsis_combined.Basicfilters.vcf > solenopsis_combined.Basicf
         -filter-name "MQRankSum" -filter "MQRankSum < -12.5" \
         -filter-name "ReadPosRankSum" -filter "ReadPosRankSum < -8.0" 
 ```
+#### 13. Gzip the following GVCF files:
+*solenopsis_combined.vcf 
+*solenopsis_combined.Basicfilters.vcf 
+*solenopsis_combined.GATKfilters.vcf 
+```
+gzip solenopsis_combined.vcf
+gzip solenopsis_combined.Basicfilters.vcf
+gzip solenopsis_combined.GATKfilters.vcf
+```
 
 #### 13. Compare filtered and unfiltered files using `bcftools`.
 ```
@@ -387,7 +396,14 @@ bcftools stats -f "PASS,." solenopsis_combined.vcf.gz >solenopsis_combined.vcf.s
 bcftools stats -f "PASS,." solenopsis_combined.Basicfilters.vcf.gz >solenopsis_combined.Basicfilters.vcf.stats.txt
 bcftools stats -f "PASS,." solenopsis_combined.GATKfilters.vcf.gz >solenopsis_combined.GATKfilters.vcf.stats.txt
 ```
+
 #### 13. Search for the number of SNPs in each `.stats.txt` file.
 grep 'number of SNPs:' *stats.txt
 
+Output:
+```
+solenopsis_combined.Basicfilters.vcf.stats.txt:SN       0       number of SNPs: 3194
+solenopsis_combined.GATKfilters.vcf.stats.txt:SN        0       number of SNPs: 36851
+solenopsis_combined.vcf.stats.txt:SN    0       number of SNPs: 52557
+```
 
