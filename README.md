@@ -9,7 +9,7 @@ mkdir zsmith10
 ---
 ## FastQC v0.11.9 [Directory: 1_fastqc] : Assess Quality of Sequence Reads.
 ---
-#### 1. Make a new `fastqc` directory.
+#### 1. Make a new `fastqc` directory and change into it.
 ```
 mkdir 1_fastqc
 cd 1_fastqc
