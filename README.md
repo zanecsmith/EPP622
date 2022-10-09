@@ -43,7 +43,7 @@ scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysi
 ---
 ## Skewer v0.2.2 [Directory: 2_skewer]: Trim Sequence Reads of Adapter Sequences.
 ---
-#### 1. Make a new `skewer` directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10
+#### 1. Make a new `skewer` directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10 and change into it.
 ```
 cd ../
 mkdir 2_skewer
