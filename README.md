@@ -400,10 +400,15 @@ bcftools stats -f "PASS,." solenopsis_combined.GATKfilters.vcf.gz >solenopsis_co
 #### 13. Search for the number of SNPs in each `.stats.txt` file.
 grep 'number of SNPs:' *stats.txt
 
-Output:
+SNP Output:
 ```
 solenopsis_combined.Basicfilters.vcf.stats.txt:SN       0       number of SNPs: 3194
 solenopsis_combined.GATKfilters.vcf.stats.txt:SN        0       number of SNPs: 36851
 solenopsis_combined.vcf.stats.txt:SN    0       number of SNPs: 52557
 ```
-
+Indel Output:
+```
+solenopsis_combined.Basicfilters.vcf.stats.txt:SN       0       number of indels:       333
+solenopsis_combined.GATKfilters.vcf.stats.txt:SN        0       number of indels:       5130
+solenopsis_combined.vcf.stats.txt:SN    0       number of indels:       7442
+```
