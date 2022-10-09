@@ -154,3 +154,41 @@ nano samtools_flagstat.sh
 
 for file in *_sorted.bam ; do basename=$(echo $file | sed 's/-trimmed_sorted.bam//') ; samtools flagstat $basename-trimmed_sorted.bam > $basename-trimmed_sorted.stats ; done
 ```
+#### 9. Add read groups to all BAM files for processing in GATK using `java` and `samtools`. First, load `java` (for Picard Tools) and `samtools`. 
+```
+spack load openjdk@11.0.8_10%gcc@8.4.1
+spack load samtools@1.9
+```
+#### 10. Now, add read groups to each sample and index them with a for loop using Picard Tools.
+```
+nano picardtools.sh
+
+for f in *_sorted.bam
+do
+        BASE=$( basename $f | sed 's/_sorted.bam*//g' )
+        echo "BASE $BASE"
+        
+	java -jar /pickett_shared/software/picard-2.27.4/picard.jar \
+		AddOrReplaceReadGroups \
+		I=${BASE}_sorted.bam \
+		O=${BASE}_sorted.RG.bam \
+		RGSM=$BASE \
+		RGLB=$BASE \
+		RGPL=illumina \
+		RGPU=$BASE
+	samtools index ${BASE}_sorted.RG.bam
+done
+```  
+#### 10. Double check that BAM files with read groups (.RG.bam files) actually had read groups added by checking the size. Add the flag `-lh` to view files in a list with human-readable sizes.
+```
+ls -lh *bam
+```
+---
+## 4. GATK v4.1.8.1: Variant Calling [Directory: 4_gatk]
+---
+1. First, make a new directory for your gatk analyses and change into it.
+```
+mkdir 4_gatk
+cd 4_gatk
+```
+2. Next, load gatk
