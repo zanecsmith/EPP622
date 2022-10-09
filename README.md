@@ -186,8 +186,9 @@ ls -lh *bam
 ---
 ## 4. GATK v4.1.8.1: Variant Calling [Directory: 4_gatk]
 ---
-1. First, make a new directory for your `gatk` analyses and change into it.
+1. First, return to your personal directory (/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10), make a new directory for your `gatk` analyses, and change into it.
 ```
+cd ../
 mkdir 4_gatk
 cd 4_gatk
 ```
