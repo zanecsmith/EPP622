@@ -9,7 +9,7 @@ mkdir zsmith10
 ---
 ## FastQC v0.11.9 [Directory: 1_fastqc] : Assess Quality of Sequence Reads.
 ---
-#### 1. Make a new fastqc directory.
+#### 1. Make a new `fastqc` directory.
 ```
 mkdir 1_fastqc
 cd 1_fastqc
@@ -20,7 +20,7 @@ cd 1_fastqc
 ln -s ../../../raw_data/solenopsis_invicta_test2/*fastq .
 ```
 
-#### 3. Load fastqc in Spack.
+#### 3. Load `fastqc` in `spack`.
 ```
 spack load fastqc
 ```
@@ -30,7 +30,7 @@ spack load fastqc
 for file in *.fastq; do fastqc $file; done
 ```
 
-#### 5. Secure copy files to your computer to view .html version fastqc files.
+#### 5. Secure copy files to your computer to view .html versions of .fastqc files.
 ##### 5a. Open a new local terminal.
 ```
 cd desktop
@@ -43,7 +43,7 @@ scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysi
 ---
 ## Skewer v0.2.2 [Directory: 2_skewer]: Trim Sequence Reads of Adapter Sequences.
 ---
-#### 1. Make a new skewer directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10
+#### 1. Make a new `skewer` directory in /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10
 ```
 cd ../
 mkdir 2_skewer
@@ -71,7 +71,7 @@ for f in *fastq; do BASE=$( basename $f | sed 's/_1.fastq//g'); echo $BASE;  /sp
 * The -l flag defines minimum sequence lengths to keep
 * The -Q flag defines the minimum Phred quality score for seqeuences
 
-#### 5. Run fastqc on trimmed .fastq files to generate .fastqc files in html format.
+#### 5. Run `fastqc` on trimmed .fastq files to generate .fastqc files in html format.
 ```
 fastqc *trimmed.fastq
 ```
