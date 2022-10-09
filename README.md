@@ -226,4 +226,8 @@ done
 ```
 bash gatk_haplotypecaller.sh
 ```
-
+7. Copy the reference genome, reference genome index, all RG.bam and RG.bam.bai files, and all .vcf files to your computer using your local terminal.
+```
+scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/SRR*' .
+scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/S_invicta*'
+```
