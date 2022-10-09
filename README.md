@@ -347,7 +347,7 @@ SN      0       number of multiallelic sites:   1235
 SN      0       number of multiallelic SNP sites:       137
 ```
 
-#### 9. Unzip `solenopsis_combined.vcf.gz`.
+#### 9. Before filtering, unzip the `solenopsis_combined.vcf.gz` file in order to view files and ensure filters are working properly along the way.
 ```
 gunzip solenopsis_combined.vcf.gz
 ```
@@ -361,13 +361,27 @@ gunzip solenopsis_combined.vcf.gz
         -filter-name "basic_filter" -filter "QUAL > 20.0 && DP > 5"
 ```
 
-#### 11. Recheck the number of SNPs using `bcftools` to create a `.txt` file.
+#### 11. Check how many SNPs there are in the `Basicfilters` file using `bcftools` to create a `.txt` file. 
 ```
 spack load bcftools
 bcftools stats solenopsis_combined.Basicfilters.vcf > solenopsis_combined.Basicfilters.vcf.stats.txt
 ```
 
-#### 12. Compare filtered and unfiltered files using `bcftools`.
+#### 12. Filter using the 'gatk' recommended filtering parameters to compare. `gatk` filters help with strand bias, filtering for quality based upon depth, etc. Note: There is no need to check SNP counts using `bcftools` because no information is actually removed by filtering, only flagged differently. Thus, output parameters, such as SNP counts, will be identical.
+```
+/pickett_shared/software/gatk-4.2.6.1/gatk VariantFiltration \
+        -R UNIL_Sinv_3.0.fasta  \
+        -V solenopsis_combined.vcf \
+        -O solenopsis_combined.GATKfilters.vcf \
+        -filter-name "QD_filter" -filter "QD < 2.0" \
+        -filter-name "FS_filter" -filter "FS > 60.0" \
+        -filter-name "MQ_filter" -filter "MQ < 40.0" \
+        -filter-name "SOR_filter" -filter "SOR > 4.0" \
+        -filter-name "MQRankSum" -filter "MQRankSum < -12.5" \
+        -filter-name "ReadPosRankSum" -filter "ReadPosRankSum < -8.0" 
+```
+
+#### 13. Compare filtered and unfiltered files using `bcftools`.
 ```
 bcftools stats -f "PASS,." solenopsis_combined.vcf.gz >solenopsis_combined.vcf.stats.txt
 bcftools stats -f "PASS,." solenopsis_combined.Basicfilters.vcf.gz >solenopsis_combined.Basicfilters.vcf.stats.txt
