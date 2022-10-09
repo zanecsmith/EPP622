@@ -234,7 +234,7 @@ ln -s ../3_bwa/*RG.bam* .
 samtools faidx UNIL_Sinv_3.0.fasta
 ```
 
-#### 5. Now, write a for loop tocall SNPs and indels using the `gatk` HaplotypeCaller to compare variants. Files will be output in GVCF format to view loci regardless of whether a variant is detected. Standard VCF files only reported detected variant calls.
+#### 5. Now, write a for loop to call SNPs and indels using the `gatk` HaplotypeCaller to compare variants. Files will be output in VCF and GVCF format. Standard VCF files only report detected variant calls, while GVCF files will allow us to recall SNPs/indels across samples by reporting all loci regardless of variants.
 ```
 nano gatk_haplotypecaller.sh
 
@@ -245,11 +245,17 @@ do
 
         /pickett_shared/software/gatk-4.2.6.1/gatk HaplotypeCaller \
         -R UNIL_Sinv_3.0.fasta \
+        -I ${BASE}-trimmed_sorted.RG.bam \
+        -O ${BASE}.vcf
+
+        /pickett_shared/software/gatk-4.2.6.1/gatk HaplotypeCaller \
+        -R UNIL_Sinv_3.0.fasta \
         -I $f \
         -O ${BASE}.g.vcf \
         -ERC GVCF \
         -bamout ${BASE}_sorted.BG.realigned.bam
 done
+
 ```
 
 #### 6. Exit the `nano` text file and run the script using `bash`.
@@ -346,7 +352,7 @@ SN      0       number of multiallelic SNP sites:       137
 gunzip solenopsis_combined.vcf.gz
 ```
 
-#### 10. Filter for sequence depth and quality using manual parameters.
+#### 10. Filter for sequence depth and quality using manual parameters in the `gatk` VariantFiltration tool.
 ```
 /pickett_shared/software/gatk-4.2.6.1/gatk VariantFiltration \
         -R UNIL_Sinv_3.0.fasta  \
@@ -355,4 +361,12 @@ gunzip solenopsis_combined.vcf.gz
         -filter-name "basic_filter" -filter "QUAL > 20.0 && DP > 5"
 ```
 
-#### 10. 
+#### 11. Recheck the number of SNPs using `bcftools` to create a `.txt` file.
+```
+spack load bcftools
+bcftools stats solenopsis_combined.Basicfilters.vcf > solenopsis_combined.Basicfilters.vcf.stats.txt
+```
+
+#### 12. Compare filtered and unfiltered files using `bcftools`.
+```
+bcftools stats -f "PASS,." solenopsis_combined.vcf.gz >solenopsis_combined.vcf.stats.txt
