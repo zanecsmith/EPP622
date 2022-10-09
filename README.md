@@ -210,6 +210,9 @@ ls -lh *bam
 spack load bc%gcc@8.4.1
 echo $(cat *-trimmed.fastq | wc -l)/4 | bc
 ```
+#### 14. Generate a stats report for each sample using `bcftools`'s stats tool.
+```
+```
 
 ---
 ## 4. GATK v4.1.8.1: Variant Calling [Directory: 4_gatk]
@@ -237,7 +240,8 @@ samtools faidx UNIL_Sinv_3.0.fasta
 #### 5. Now, write a for loop to call SNPs and indels using the `gatk` HaplotypeCaller to compare variants. Files will be output in VCF and GVCF format. Standard VCF files only report detected variant calls, while GVCF files will allow us to recall SNPs/indels across samples by reporting all loci regardless of variants.
 ```
 nano gatk_haplotypecaller.sh
-
+```
+```
 for f in *_sorted.RG.bam
 do
         BASE=$( basename $f | sed 's/-trimmed_sorted.RG.bam*//g' )
@@ -255,7 +259,6 @@ do
         -ERC GVCF \
         -bamout ${BASE}_sorted.BG.realigned.bam
 done
-
 ```
 
 #### 6. Exit the `nano` text file and run the script using `bash`.
@@ -263,13 +266,53 @@ done
 bash gatk_haplotypecaller.sh
 ```
 
-#### 7. Copy the reference genome, reference genome index, all RG.bam and RG.bam.bai files, and all .vcf files to your computer using your local terminal.
+#### 7. Use `bcftools`'s stats tool to generate stats files for each sample using a for loop.
+```
+nano bcftools_stats.sh
+```
+```
+for f in *.vcf
+do
+        BASE=$( basename $f | sed 's/.vcf//g' )
+        echo "BASE $BASE"
+
+        bcftools stats $BASE.vcf > $BASE.vcf.stats.txt
+done
+
+rm *g.vcf.stats.txt
+```
+
+#### 8. Use grep to retrieve SNP counts from the `.stats` files.
+```
+grep 'number of SNPs:' SRR*vcf.stats.txt
+```
+SNPs Output:
+```
+SRR6922141.vcf.stats.txt:SN     0       number of SNPs: 27332
+SRR6922185.vcf.stats.txt:SN     0       number of SNPs: 19653
+SRR6922187.vcf.stats.txt:SN     0       number of SNPs: 25630
+SRR6922236.vcf.stats.txt:SN     0       number of SNPs: 18112
+```
+
+#### 9. Use grep to retrieve SNP counts from the `.stats` files.
+```
+grep 'number of indels:' SRR*vcf.stats.txt
+```
+Indels Output:
+```
+SRR6922141.vcf.stats.txt:SN     0       number of indels:       3838
+SRR6922185.vcf.stats.txt:SN     0       number of indels:       3159
+SRR6922187.vcf.stats.txt:SN     0       number of indels:       3466
+SRR6922236.vcf.stats.txt:SN     0       number of indels:       2955
+```
+
+#### 10. Copy the reference genome, reference genome index, all RG.bam and RG.bam.bai files, and all .vcf files to your computer using your local terminal.
 ```
 scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/SRR*' .
 scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/UNIL*' .
 ```
 
-#### 8. View these files on IGV (igv.org). IGV allows you to visualize whether SNPs in the VCF files are supported, as well as visualize multiple read alignments.
+#### 11. View these files on IGV (igv.org). IGV allows you to visualize whether SNPs in the VCF files are supported, as well as visualize multiple read alignments.
 
 ---
 ## 5. GATK v4.1.8.1: Combining GVCFs and calling SNPs across sample groups [Directory: 5_gatk_combine]
@@ -380,7 +423,7 @@ bcftools stats solenopsis_combined.Basicfilters.vcf > solenopsis_combined.Basicf
         -filter-name "MQRankSum" -filter "MQRankSum < -12.5" \
         -filter-name "ReadPosRankSum" -filter "ReadPosRankSum < -8.0" 
 ```
-#### 13. Gzip the following GVCF files:
+#### 13. Gzip the following GVCF files to reduce their storage size:
 *solenopsis_combined.vcf 
 *solenopsis_combined.Basicfilters.vcf 
 *solenopsis_combined.GATKfilters.vcf 
@@ -390,14 +433,14 @@ gzip solenopsis_combined.Basicfilters.vcf
 gzip solenopsis_combined.GATKfilters.vcf
 ```
 
-#### 13. Compare filtered and unfiltered files using `bcftools`.
+#### 14. Compare filtered and unfiltered files using `bcftools`.
 ```
 bcftools stats -f "PASS,." solenopsis_combined.vcf.gz >solenopsis_combined.vcf.stats.txt
 bcftools stats -f "PASS,." solenopsis_combined.Basicfilters.vcf.gz >solenopsis_combined.Basicfilters.vcf.stats.txt
 bcftools stats -f "PASS,." solenopsis_combined.GATKfilters.vcf.gz >solenopsis_combined.GATKfilters.vcf.stats.txt
 ```
 
-#### 13. Search for the number of SNPs in each `.stats.txt` file.
+#### 15. Search for the number of SNPs in each `.stats.txt` file.
 ```
 grep 'number of SNPs:' *stats.txt
 ```
@@ -408,9 +451,10 @@ solenopsis_combined.GATKfilters.vcf.stats.txt:SN        0       number of SNPs: 
 solenopsis_combined.vcf.stats.txt:SN    0       number of SNPs: 52557
 ```
 
-#### 14. Search for the number of indels in each `.stats.txt` file.
+#### 16. Search for the number of indels in each `.stats.txt` file.
 ```
 grep 'number of indels:' *stats.txt
+```
 Indel Output:
 ```
 solenopsis_combined.Basicfilters.vcf.stats.txt:SN       0       number of indels:       333
