@@ -205,5 +205,25 @@ ln -s ../3_bwa/*RG.bam* .
 ```
 samtools faidx UNIL_Sinv_3.0.fasta
 ```
+5. Now, write a for loop tocall SNPs and indels using the `gatk` HaplotypeCaller to compare variants. Files will be output in GVCF format to view loci regardless of whether a variant is detected. Standard VCF files only reported detected variant calls.
+```
+nano gatk_haplotypecaller.sh
 
+for f in *_sorted.RG.bam
+do
+        BASE=$( basename $f | sed 's/-trimmed_sorted.RG.bam*//g' )
+        echo "BASE $BASE"
+
+        /pickett_shared/software/gatk-4.2.6.1/gatk HaplotypeCaller \
+        -R UNIL_Sinv_3.0.fasta \
+        -I $f \
+        -O ${BASE}.g.vcf \
+        -ERC GVCF \
+        -bamout ${BASE}_sorted.BG.realigned.bam
+done
+```
+6. Exit the `nano` text file and run the script using `bash`.
+```
+bash gatk_haplotypecaller.sh
+```
 
