@@ -186,7 +186,7 @@ ls -lh *bam
 ---
 ## 4. GATK v4.1.8.1: Variant Calling [Directory: 4_gatk]
 ---
-1. First, make a new directory for your gatk analyses and change into it.
+1. First, make a new directory for your `gatk` analyses and change into it.
 ```
 mkdir 4_gatk
 cd 4_gatk
@@ -196,7 +196,7 @@ cd 4_gatk
 ln -s /pickett_shared/teaching/EPP622_Fall2022/raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta .
 ln -s ../3_bwa/*RG.bam* .
 ```
-3. Create a reference genome sequence dictionary (a .dict file) using GATK Note: GATK is natively installed on the server and is not loaded using `spack`.
+3. Create a reference genome sequence dictionary (a .dict file) using `gatk` Note: `gatk` is natively installed on the server and is not loaded using `spack`.
 ```
 /pickett_shared/software/gatk-4.2.6.1/gatk CreateSequenceDictionary -R UNIL_Sinv_3.0.fasta
 ```
