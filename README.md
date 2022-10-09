@@ -179,7 +179,12 @@ do
 	samtools index ${BASE}_sorted.RG.bam
 done
 ```  
-#### 10. Double check that BAM files with read groups (.RG.bam files) actually had read groups added by checking the size of both .bam and their corresponding .RG.bam files. Add the flag `-lh` to view files in a list with human-readable sizes.
+#### 10. Exit the `nano` text file and run the script using `bash`.
+```
+bash picardtools.sh
+```
+
+#### 11. Double check that BAM files with read groups (.RG.bam files) actually had read groups added by checking the size of both .bam and their corresponding .RG.bam files. Add the flag `-lh` to view files in a list with human-readable sizes.
 ```
 ls -lh *bam
 ```
