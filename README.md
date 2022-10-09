@@ -196,7 +196,7 @@ cd 4_gatk
 ln -s /pickett_shared/teaching/EPP622_Fall2022/raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta .
 ln -s ../3_bwa/*RG.bam* .
 ```
-3. Create a reference genome sequence dictionary (a .dict file) using GATK Note: GATK is natively installed on the server and is not loaded uses `spack`.
+3. Create a reference genome sequence dictionary (a .dict file) using GATK Note: GATK is natively installed on the server and is not loaded using `spack`.
 ```
 /pickett_shared/software/gatk-4.2.6.1/gatk CreateSequenceDictionary -R UNIL_Sinv_3.0.fasta
 ```
