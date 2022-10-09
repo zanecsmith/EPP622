@@ -179,7 +179,7 @@ do
 	samtools index ${BASE}_sorted.RG.bam
 done
 ```  
-#### 10. Double check that BAM files with read groups (.RG.bam files) actually had read groups added by checking the size. Add the flag `-lh` to view files in a list with human-readable sizes.
+#### 10. Double check that BAM files with read groups (.RG.bam files) actually had read groups added by checking the size of both .bam and their corresponding .RG.bam files. Add the flag `-lh` to view files in a list with human-readable sizes.
 ```
 ls -lh *bam
 ```
@@ -191,4 +191,18 @@ ls -lh *bam
 mkdir 4_gatk
 cd 4_gatk
 ```
-2. Next, load gatk
+2. Next, symbolically link the Solenopsis invicta reference genome, bam files with read groups (.RG.bam files) and index bam files with read groups (.RG.bam.bai files) to the 4_gatk directory.
+```
+ln -s /pickett_shared/teaching/EPP622_Fall2022/raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta .
+ln -s ../3_bwa/*RG.bam* .
+```
+3. Create a reference genome sequence dictionary (a .dict file) using GATK Note: GATK is natively installed on the server and is not loaded uses `spack`.
+```
+/pickett_shared/software/gatk-4.2.6.1/gatk CreateSequenceDictionary -R UNIL_Sinv_3.0.fasta
+```
+4. Index the reference genome .dict file using `samtools`, which create an indexed .fasta file with the .fasta.fai file type.
+```
+samtools faidx UNIL_Sinv_3.0.fasta
+```
+
+
