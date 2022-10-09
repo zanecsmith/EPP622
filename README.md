@@ -144,21 +144,25 @@ done
 * the -bSh flag in `samtools` converts large SAM files into smaller, binary BAM files with headers.
 * the -@ flag designates threads for the job in `samtools`.
 * the -m flag designates memory for the job in `samtools`.
+
 #### 7. Run the script, which will produce sorted BAM files, using `bash` with the following command:
 ```
 bash bwa.sh
 ```
+
 #### 8. To assess mapped reads and supplemental reads, run the following for loop to create read-mapping stats files with `samtools`.
 ```
 nano samtools_flagstat.sh
 
 for file in *_sorted.bam ; do basename=$(echo $file | sed 's/-trimmed_sorted.bam//') ; samtools flagstat $basename-trimmed_sorted.bam > $basename-trimmed_sorted.stats ; done
 ```
+
 #### 9. Add read groups to all BAM files for processing in GATK using `java` and `samtools`. First, load `java` (for Picard Tools) and `samtools`. 
 ```
 spack load openjdk@11.0.8_10%gcc@8.4.1
 spack load samtools@1.9
 ```
+
 #### 10. Now, add read groups to each sample and index them with a for loop using Picard Tools.
 ```
 nano picardtools.sh
@@ -179,38 +183,40 @@ do
 	samtools index ${BASE}_sorted.RG.bam
 done
 ```  
-#### 10. Exit the `nano` text file and run the script using `bash`.
+
+#### 11. Exit the `nano` text file and run the script using `bash`.
 ```
 bash picardtools.sh
 ```
 
-#### 11. Double check that BAM files with read groups (.RG.bam files) actually had read groups added by checking the size of both .bam and their corresponding .RG.bam files. Add the flag `-lh` to view files in a list with human-readable sizes.
+#### 12. Double check that BAM files with read groups (.RG.bam files) actually had read groups added by checking the size of both .bam and their corresponding .RG.bam files. Add the flag `-lh` to view files in a list with human-readable sizes.
 ```
 ls -lh *bam
 ```
 ---
 ## 4. GATK v4.1.8.1: Variant Calling [Directory: 4_gatk]
 ---
-1. First, return to your personal directory (/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10), make a new directory for your `gatk` analyses, and change into it.
+#### 1. First, return to your personal directory (/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10), make a new directory for your `gatk` analyses, and change into it.
 ```
 cd ../
 mkdir 4_gatk
 cd 4_gatk
 ```
-2. Next, symbolically link the Solenopsis invicta reference genome, bam files with read groups (.RG.bam files) and index bam files with read groups (.RG.bam.bai files) to the 4_gatk directory.
+#### 2. Next, symbolically link the Solenopsis invicta reference genome, bam files with read groups (.RG.bam files) and index bam files with read groups (.RG.bam.bai files) to the 4_gatk directory.
 ```
 ln -s /pickett_shared/teaching/EPP622_Fall2022/raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta .
 ln -s ../3_bwa/*RG.bam* .
 ```
-3. Create a reference genome sequence dictionary (a .dict file) using `gatk` Note: `gatk` is natively installed on the server and is not loaded using `spack`.
+#### 3. Create a reference genome sequence dictionary (a .dict file) using `gatk` Note: `gatk` is natively installed on the server and is not loaded using `spack`.
 ```
 /pickett_shared/software/gatk-4.2.6.1/gatk CreateSequenceDictionary -R UNIL_Sinv_3.0.fasta
 ```
-4. Index the reference genome .dict file using `samtools`, which create an indexed .fasta file with the .fasta.fai file type.
+#### 4. Index the reference genome .dict file using `samtools`, which create an indexed .fasta file with the .fasta.fai file type.
 ```
 samtools faidx UNIL_Sinv_3.0.fasta
 ```
-5. Now, write a for loop tocall SNPs and indels using the `gatk` HaplotypeCaller to compare variants. Files will be output in GVCF format to view loci regardless of whether a variant is detected. Standard VCF files only reported detected variant calls.
+
+#### 5. Now, write a for loop tocall SNPs and indels using the `gatk` HaplotypeCaller to compare variants. Files will be output in GVCF format to view loci regardless of whether a variant is detected. Standard VCF files only reported detected variant calls.
 ```
 nano gatk_haplotypecaller.sh
 
@@ -227,12 +233,68 @@ do
         -bamout ${BASE}_sorted.BG.realigned.bam
 done
 ```
-6. Exit the `nano` text file and run the script using `bash`.
+
+#### 6. Exit the `nano` text file and run the script using `bash`.
 ```
 bash gatk_haplotypecaller.sh
 ```
-7. Copy the reference genome, reference genome index, all RG.bam and RG.bam.bai files, and all .vcf files to your computer using your local terminal.
+
+#### 7. Copy the reference genome, reference genome index, all RG.bam and RG.bam.bai files, and all .vcf files to your computer using your local terminal.
 ```
 scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/SRR*' .
-scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/S_invicta*'
+scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/UNIL*' .
 ```
+
+#### 8. View these files on IGV (igv.org). IGV allows you to visualize whether SNPs in the VCF files are supported, as well as visualize multiple read alignments.
+
+---
+## 5. GATK v4.1.8.1: Combining GVCFs and calling SNPs across sample groups [Directory: 5_gatk_combine]
+---
+#### 1. Make a new directory and change into it.
+```
+mkdir 5_gatk_combine
+cd 5_gatk_combine
+```
+
+#### 2. Symbolically link all reference genome files.
+```
+ln -s /pickett_shared/teaching/EPP622_Fall2022/raw_data/solenopsis_invicta/genome/UNIL_Sinv_3.0.fasta
+ln -s ../4_gatk/UNIL_Sinv_3.0.fasta.fai
+ln -s ../4_gatk/UNIL_Sinv_3.0.dict .
+```
+
+#### 3. Link all GVCF files from the 4_gatk directory.
+```
+ln -s /pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/4_gatk/*g.vcf .
+```
+
+#### 4. Write a script (`gatk_combine_gvcf_create.text.sh`) to generate a text command to combine GVCF files using the `gatk` CombineGVCF tool. 
+*Define your reference as the Solenopsis invictus reference genome using the -R flag in gatk Combine GVCF tools. 
+*Append each echo command to a new script file (gatk_combine_gvcf_run.sh) using `>>`. This will allow you to save the text output and rapidly regenerate the combined GVCF file. (Warning: extra spaces and tabs will break the script!)
+
+```
+nano gatk_combine_gvcf_create.text.sh
+```
+```
+echo "/pickett_shared/software/gatk-4.2.6.1/gatk CombineGVCFs \\
+-R UNIL_Sinv_3.0.fasta \\" >> gatk_combine_gvcf_run.sh
+
+for f in *g.vcf
+do
+        echo "-variant $f \\" >> gatk_combine_gvcf_run.sh
+done
+
+echo "-O solenopsis_combined.g.vcf.gz" >> gatk_combine_gvcf_run.sh
+
+```
+
+#### 5. Now that you have created your `gatk_combined_gvcf_create.txt.sh` script, run it to create a script to generate a combined GVCF file.
+```
+bash gatk_combine_gvcf_create.text.sh
+```
+
+#### 6. This will create the aforementioned `gatk_combine_gvcf_run.sh` script. Run it to generate a combined GVCF file.
+```
+bash gatk_combine_gvcf_run.sh
+```
+
