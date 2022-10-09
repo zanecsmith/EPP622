@@ -83,7 +83,7 @@ mkdir test2_2_skewer
 cd test2_2_skewer
 scp 'zsmith10@sphinx.ag.utk.edu:/pickett_shared/teaching/EPP622_Fall2022/analysis_test2/zsmith10/2_skewer/*html' .
 ```
-##### 6b. View files in browser to check quality, then return to the sphinx terminal.
+##### 6b. View files in browser to check quality and ensure sequences were removed, then return to the sphinx terminal.
 
 ---
 ## BWA v0.7.17 [Directory: 3_bwa]: Burrows-Wheeler Alignment (Aligning Sequences to a Reference)
