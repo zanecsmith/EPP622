@@ -150,7 +150,7 @@ done
 bash bwa.sh
 ```
 
-#### 8. To assess mapped reads and supplemental reads, run the following for loop to create read-mapping stats files with `samtools`.
+#### 8. To assess number of mapped and supplemental reads, create a script for the following for loop to create read-mapping stats files with `samtools`. Use `bc`'s calculator tool to divide by 4 to correct the number of mapped reads
 ```
 nano samtools_flagstat.sh
 ```
@@ -162,7 +162,8 @@ for file in *_sorted.bam
 do
         basename=$(echo $file | sed 's/-trimmed_sorted.bam//')
         samtools flagstat $basename-trimmed_sorted.bam > $basename-trimmed_sorted.stats
-
+	
+	echo $basename
         echo $(cat $basename-trimmed.fastq | wc -l)/4 | bc
 
 done
@@ -314,4 +315,44 @@ bash gatk_combine_gvcf_create.text.sh
 ```
 bash gatk_combine_gvcf_run.sh
 ```
+#### 7. Now call variants again using the GenotypeGVCFs tool in `gatk` to generate a VCF file.
+```
+/pickett_shared/software/gatk-4.2.6.1/gatk --java-options "-Xmx10g" GenotypeGVCFs \
+   -R UNIL_Sinv_3.0.fasta  \
+   -V solenopsis_combined.g.vcf.gz \
+   -O solenopsis_combined.vcf.gz
+```
 
+#### 8. Check the number of SNPs using `bcftools` to create a `.txt` file.
+```
+spack load bcftools
+bcftools stats solenopsis_combined.vcf.gz > solenopsis_combined.vcf.stats.txt
+```
+*Parameters for file output appear so:
+```
+SN      0       number of samples:      4
+SN      0       number of records:      59869
+SN      0       number of no-ALTs:      0
+SN      0       number of SNPs: 52557
+SN      0       number of MNPs: 0
+SN      0       number of indels:       7442
+SN      0       number of others:       0
+SN      0       number of multiallelic sites:   1235
+SN      0       number of multiallelic SNP sites:       137
+```
+
+#### 9. Unzip `solenopsis_combined.vcf.gz`.
+```
+gunzip solenopsis_combined.vcf.gz
+```
+
+#### 10. Filter for sequence depth and quality using manual parameters.
+```
+/pickett_shared/software/gatk-4.2.6.1/gatk VariantFiltration \
+        -R UNIL_Sinv_3.0.fasta  \
+        -V solenopsis_combined.vcf \
+        -O solenopsis_combined.Basicfilters.vcf \
+        -filter-name "basic_filter" -filter "QUAL > 20.0 && DP > 5"
+```
+
+#### 10. 
